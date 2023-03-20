@@ -3,6 +3,7 @@ const cors = require('cors')
 const dotenv = require("dotenv")
 const { connection } = require('./config/db')
 const { routerpost } = require('./router/posts')
+const { userRouterPost } = require('./router/users')
 
 
 
@@ -18,6 +19,7 @@ app.get('/',(req,res)=>{
 })
 
 app.use("/posts",routerpost)
+app.use('/user', userRouterPost)
 
 
 app.listen(PORT, async ()=>{
