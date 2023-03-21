@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 function Posts({ setCurrentId }) {
   const classes = useStyles();
   const posts = useSelector((e) => e.posts);
-  console.log(posts);
   return !posts.length ? (
     <CircularProgress />
   ) : (

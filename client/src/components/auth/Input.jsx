@@ -15,7 +15,7 @@ function Input({ half, name, label, autoFocus, type, handelChange, handelShowPas
         autoFocus={autoFocus}
         type={type}
         inputProps={
-          name === "password" && {
+          type === "password" ? {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={handelShowPassword}>
@@ -23,7 +23,7 @@ function Input({ half, name, label, autoFocus, type, handelChange, handelShowPas
                 </IconButton>
               </InputAdornment>
             ),
-          }
+          } : false
         }
       />
     </Grid>

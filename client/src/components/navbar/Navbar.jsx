@@ -1,13 +1,23 @@
 import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { LOGOUT } from "../../action/action.Type";
 import useStyles from "./styles";
+import 'react-toastify/dist/ReactToastify.css';
+import { Toastcontainer } from "../tost/Toast";
 
 function Navbar() {
   const classes = useStyles();
-  const user = null;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [user, setuser] = useState(false);
+  useEffect(() => {
+    setuser(JSON.parse(localStorage.getItem("profile")) || false);
+  }, [navigate]);
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
+      <Toastcontainer />
       <div className={classes.brandContainer}>
         <Typography
           component={Link}
@@ -42,6 +52,10 @@ function Navbar() {
               variant="contained"
               className={classes.logout}
               color={"secondary"}
+              onClick={() => {
+                dispatch({ type: LOGOUT });
+                navigate("/auth");
+              }}
             >
               Logout
             </Button>

@@ -6,28 +6,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../action/posts";
 
 function Form({ setCurrentId, currentId }) {
-  const post = useSelector((e) => currentId ? e.posts.find((x) => x._id === currentId) : null );
-  console.log(post)
+  const post = useSelector((e) =>
+    currentId ? e.posts.find((x) => x._id === currentId) : null
+  );
+  const user = JSON.parse(localStorage.getItem("profile"));
   const classes = useStyles();
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
     selectedFile: "",
   });
   useEffect(() => {
-    if(post){
-      setPostData(post)
+    if (post) {
+      setPostData(post);
     }
-  },[post])
-  function Clear(e) {
-    setCurrentId(null)
+  }, [post]);
+  function Clear() {
+    setCurrentId(null);
     setPostData({
-      creator: "",
       title: "",
       message: "",
-      tags: '',
+      tags: "",
       selectedFile: "",
     });
   }
@@ -35,14 +35,24 @@ function Form({ setCurrentId, currentId }) {
 
   const HandelSubmit = (e) => {
     e.preventDefault();
-    if(currentId){
-      dispatch(updatePost(currentId , postData))
-    }else{
-      dispatch(createPost(postData));
-    } 
-    Clear()
+    if (currentId) {
+      dispatch(
+        updatePost(currentId, { ...postData, name: user?.result?.name })
+      );
+    } else {
+      dispatch(createPost({ ...postData, name: user?.result?.name }));
+    }
+    Clear();
   };
-
+  if (!user?.result?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please sign_in to create your own memories
+        </Typography>
+      </Paper>
+    );
+  }
   return (
     <Paper className={classes.paper}>
       <form
@@ -52,17 +62,9 @@ function Form({ setCurrentId, currentId }) {
         className={`${classes.root} ${classes.form}`}
         onSubmit={HandelSubmit}
       >
-        <Typography variant="h6">{currentId ? "Upadate Your Memory" : "Creating a Memory"}</Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={(e) =>
-            setPostData({ ...postData, creator: e.target.value })
-          }
-        />
+        <Typography variant="h6">
+          {currentId ? "Upadate Your Memory" : "Creating a Memory"}
+        </Typography>
         <TextField
           name="title"
           variant="outlined"
@@ -87,7 +89,9 @@ function Form({ setCurrentId, currentId }) {
           label="Tags"
           fullWidth
           value={postData.tags}
-          onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(",") })}
+          onChange={(e) =>
+            setPostData({ ...postData, tags: e.target.value.split(",") })
+          }
         />
         <div style={{ padding: "10px", marginLeft: "-40px" }}>
           <FileBase

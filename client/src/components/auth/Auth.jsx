@@ -14,6 +14,7 @@ import { signin, signup } from "../../action/auth";
 import Input from "./Input";
 import useStyle from "./styles";
 
+
 const initsialState = {
   firstName: "",
   lastName: "",
