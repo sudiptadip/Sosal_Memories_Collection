@@ -7,7 +7,6 @@ export const signin = (fromData,navigate) => async (dispatch) => {
     try {
         const {data} = await api.signIn(fromData)
         dispatch({type: AUTH, payload: data})
-        console.log(data)
         Toast('success',"Success")
         navigate('/')
     } catch (err) {
@@ -19,7 +18,6 @@ export const signin = (fromData,navigate) => async (dispatch) => {
 export const signup = (fromData,navigate) => async (dispatch) => {
     try {
         const {data} = await api.signUp(fromData)
-        console.log(data)
         dispatch({type: AUTH, payload: data})
         navigate('/')
         Toast('success',"Successfuly created account")

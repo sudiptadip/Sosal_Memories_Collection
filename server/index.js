@@ -6,7 +6,6 @@ const { routerpost } = require('./router/posts')
 const { userRouterPost } = require('./router/users')
 
 
-
 const app = express()
 dotenv.config()
 const PORT = process.env.PORT || 5000
@@ -19,7 +18,7 @@ app.get('/',(req,res)=>{
 })
 
 app.use("/posts",routerpost)
-app.use('/user', userRouterPost)
+app.use('/users', userRouterPost)
 
 
 app.listen(PORT, async ()=>{

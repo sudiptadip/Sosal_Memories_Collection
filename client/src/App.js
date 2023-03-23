@@ -1,16 +1,21 @@
 import React from "react";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./components/home/Home";
-import { Route, Routes } from "react-router-dom";
+import {  Navigate, Route, Routes } from "react-router-dom";
 import Auth from "./components/auth/Auth";
+import PostDetails from "./components/postDetails/PostDetails";
 
 function App() {
+  const user = JSON.parse(localStorage.getItem("profile"))
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Auth />} />
+        <Route  path="/" element={<Navigate to="/posts" replace />} />
+        <Route path="/posts" element={<Home />} />
+        <Route path="/posts/search" element={<Home />} />
+        <Route path="/posts/:id" element={<PostDetails />} />
+        <Route path="/auth" element={!user ? <Auth /> : <Navigate to="/posts" replace />} />
       </Routes>
     </>
   );

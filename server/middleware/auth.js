@@ -7,7 +7,6 @@ const auth = async (req,res,next) => {
         const isCostomAuth = token.length < 500
 
         let decodeData;
-
         if(token && isCostomAuth){
             decodeData = jwt.verify(token, "secret_key")
             req.userId = decodeData?.id

@@ -4,10 +4,11 @@ import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../action/posts";
+import { useNavigate } from "react-router-dom";
 
 function Form({ setCurrentId, currentId }) {
   const post = useSelector((e) =>
-    currentId ? e.posts.find((x) => x._id === currentId) : null
+    currentId ? e.posts.posts.find((x) => x._id === currentId) : null
   );
   const user = JSON.parse(localStorage.getItem("profile"));
   const classes = useStyles();
@@ -31,6 +32,7 @@ function Form({ setCurrentId, currentId }) {
       selectedFile: "",
     });
   }
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   const HandelSubmit = (e) => {
@@ -40,7 +42,7 @@ function Form({ setCurrentId, currentId }) {
         updatePost(currentId, { ...postData, name: user?.result?.name })
       );
     } else {
-      dispatch(createPost({ ...postData, name: user?.result?.name }));
+      dispatch(createPost({ ...postData, name: user?.result?.name },navigate));
     }
     Clear();
   };
@@ -54,7 +56,7 @@ function Form({ setCurrentId, currentId }) {
     );
   }
   return (
-    <Paper className={classes.paper}>
+    <Paper elevation={6} className={classes.paper}>
       <form
         action=""
         autoComplete="off"
@@ -93,7 +95,7 @@ function Form({ setCurrentId, currentId }) {
             setPostData({ ...postData, tags: e.target.value.split(",") })
           }
         />
-        <div style={{ padding: "10px", marginLeft: "-40px" }}>
+        <div style={{ padding: "15px", }}>
           <FileBase
             type="file"
             multiple={false}

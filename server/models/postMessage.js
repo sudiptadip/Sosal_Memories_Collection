@@ -4,11 +4,12 @@ const postSchema = new mongoosh.Schema({
   title: String,
   message: String,
   creator: String,
+  name: String,
   tags: [String],
   selectedFile: String,
-  linkCount: {
-    type: Number,
-    default: 0,
+  likes: {
+    type: [String],
+    default: [],
   },
   createAt: {
     type: Date,
