@@ -4,7 +4,7 @@ const { PostMessage } = require("../models/postMessage");
 const getPost = async (req, res) => {
   const {page} = req.query
   try {
-    const Limit = 8
+    const Limit = 6
     const startIndex = (Number(page) - 1) * Limit
     const total = await PostMessage.countDocuments({});
 

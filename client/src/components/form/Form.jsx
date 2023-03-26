@@ -23,16 +23,16 @@ function Form({ setCurrentId, currentId }) {
       setPostData(post);
     }
   }, [post]);
-  function Clear() {
+  const Clear = () => {
     setCurrentId(null);
-    setPostData({
+    return setPostData({
       title: "",
       message: "",
       tags: "",
       selectedFile: "",
     });
-  }
-  const navigate = useNavigate()
+  };
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const HandelSubmit = (e) => {
@@ -42,10 +42,11 @@ function Form({ setCurrentId, currentId }) {
         updatePost(currentId, { ...postData, name: user?.result?.name })
       );
     } else {
-      dispatch(createPost({ ...postData, name: user?.result?.name },navigate));
+      dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
     }
     Clear();
   };
+
   if (!user?.result?.name) {
     return (
       <Paper className={classes.paper}>
@@ -95,7 +96,7 @@ function Form({ setCurrentId, currentId }) {
             setPostData({ ...postData, tags: e.target.value.split(",") })
           }
         />
-        <div style={{ padding: "15px", }}>
+        <div style={{ padding: "15px" }}>
           <FileBase
             type="file"
             multiple={false}
@@ -114,17 +115,17 @@ function Form({ setCurrentId, currentId }) {
         >
           Submit
         </Button>
-        <Button
-          variant={"contained"}
-          color={"secondary"}
-          size={"small"}
-          type={"submit"}
-          fullWidth
-          onClick={Clear}
-        >
-          Clear
-        </Button>
       </form>
+      <Button
+        variant={"contained"}
+        color={"secondary"}
+        size={"small"}
+        type={"submit"}
+        fullWidth
+        onClick={Clear}
+      >
+        Clear
+      </Button>
     </Paper>
   );
 }

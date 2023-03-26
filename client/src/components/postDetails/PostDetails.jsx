@@ -8,21 +8,32 @@ import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getPost } from "../../action/posts";
+import { getPost, getPostsBySearch } from "../../action/posts";
 import useStyles from "./styles";
 
 function PostDetails() {
   const classes = useStyles();
-  const { post, isLoading } = useSelector((state) => state.posts);
+  const { post, posts, isLoading } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const openPost = (id) => {
+    navigate(`/posts/${id}`)
+  }
+
   useEffect(() => {
     dispatch(getPost(id));
   }, [id, dispatch]);
-  console.log(post.tags);
-  // if(post) return <></>
+  
+  useEffect(() => {
+    if(post){
+      dispatch(getPostsBySearch({search: 'none', tags: post?.tags?.join(',')}))
+    }
+  },[post,dispatch])
+
+  const recomendedPosts = posts.filter(({_id}) => _id !== post._id)
+  console.log(recomendedPosts)
   if (isLoading) {
     return (
       <Paper elevation={6} className={classes.loadingPaper}>
@@ -31,7 +42,8 @@ function PostDetails() {
     );
   }
   return (
-    <div className={classes.card}>
+    <Paper>
+      <div className={classes.card} >
       <div className={classes.section}>
         <Typography variant="h3" component="h2">
           {post.title}
@@ -64,7 +76,30 @@ function PostDetails() {
           alt={post.title}
         />
       </div>
-    </div>
+      </div>
+      {
+            recomendedPosts.length && 
+            <div className={classes.section} >
+              <Typography gutterBottom variant="h5" >You might also like:</Typography>
+              <Divider />
+              <div className={classes.recommendedPosts}>
+                  {
+                    recomendedPosts.map((e) => (
+                      <div style={{cursor: 'pointer', margin: '20px'}} onClick={() => openPost(e._id)} key={e._id} >
+                        <Typography gutterBottom variant="h6" >{e.title}</Typography>
+                        <Typography gutterBottom variant="subtitle2" >{e.name}</Typography>
+                        <Typography style={{ maxHeight: "5.8em", overflow: "hidden" }} gutterBottom variant="subtitle2" >{e.message}</Typography>
+                        <Typography gutterBottom variant="subtitle1" >Likes : - {e.likes.length}</Typography>
+                        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}} >
+                        <img src={e.selectedFile} alt={e.title} width='200px' style={{margin: 'auto'}} />
+                        </div>
+                      </div>
+                    ))
+                  }
+              </div>
+            </div>
+          }
+    </Paper>
   );
 }
 

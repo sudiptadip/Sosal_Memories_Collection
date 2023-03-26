@@ -98,7 +98,7 @@ function Post({
           {title}
         </Typography>
         <CardContent>
-          <Typography onClick={openPost} style={{cursor: "pointer"}} variant="body2" color="textSecondary" component={"p"}>
+          <Typography onClick={openPost} style={{ maxHeight: "5.8em", overflow: "hidden" }} variant="body2" color="textSecondary" component={"p"}>
             {message}
           </Typography>
         </CardContent>

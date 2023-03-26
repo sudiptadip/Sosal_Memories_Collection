@@ -7,6 +7,7 @@ import PostDetails from "./components/postDetails/PostDetails";
 
 function App() {
   const user = JSON.parse(localStorage.getItem("profile"))
+  console.log(user)
   return (
     <>
       <Navbar />
